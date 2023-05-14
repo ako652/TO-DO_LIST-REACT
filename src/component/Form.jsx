@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function Home(){
   
-const [date,setDate] =useState(null)
+const [startDate,setStartDate] =useState(new Date())
 const [title, setTitle]=useState('')
 const [options,setOptions] =useState('')
 const [lists, setLists]=useState([])
@@ -18,11 +18,11 @@ const onsubitform=(e)=>{
 e.preventDefault()
 
 
-const newlists= {title,options,date}
+const newlists= {title,options,startDate}
 setLists([...lists, newlists])
 setTitle('')
 setOptions('')
-setDate('')
+setStartDate('')
 
 
 
@@ -43,9 +43,9 @@ const deletebtn=(index)=>{
 
       <div className="w-96 h-80 border-4">
       <DatePicker
-      selected={date}
-      onChange={(date) => setDate(date)}
-      dateFormat="dd/MM/yyyy"
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+      dateFormat="Pp"
       placeholderText="Select a date"
     />
       </div>
@@ -67,12 +67,15 @@ const deletebtn=(index)=>{
         <div className="border  "> 
         <label >Progress :</label>
         <select value={options}  onChange={(e)=>setOptions(e.target.value)}>
-          <option value="in-progress">choose a task</option>
+          <option value="">choose a task</option>
          <option value='done' >done</option>
          <option value="not-started">not-started</option>
-         <option value="not-started">in-progress</option>
+         <option value="in-progress">in-progress</option>
         
          </select>
+         
+            
+    
         
          </div>
 
@@ -85,10 +88,23 @@ const deletebtn=(index)=>{
          <div className="grid ">
             {console.log(lists)}
             { lists.map((item, index)=>{
+                
                 return(
-                    <div key={index} className="grid grid-cols-3 m-4">
+                    <div key={index} className="grid grid-cols-4 m-4">
                         <p>{item.title}</p>
-                        <p>{item.options}</p>
+                        <p>
+                        {item.options === "done" && (
+                      <div style={{ backgroundColor: "green" }}>done</div>
+                                            )}
+                        {item.options === "in-progress" && (
+                  <div style={{ backgroundColor: "blue" }}>In Progress</div>
+                           )}
+                      {item.options === "not-started" && (
+                  <div style={{ backgroundColor: "red" }}>not-started</div>
+                           )}
+         
+                        </p>
+                        <p className="m-2">{`${item.startDate}`}</p>
                         <Button type="submit" className="bg-dark " onClick={()=>deletebtn(index)}>delete</Button>
                     </div>
                 )
